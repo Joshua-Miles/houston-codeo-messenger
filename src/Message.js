@@ -20,6 +20,10 @@ class Message {
   static all () {
     return allMessages
   }
+
+  static wipeAll() {
+    allMessages = []
+  }
 }
 
 allMessages = []

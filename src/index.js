@@ -9,14 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
   messageUl.id = "message-list"
   messageDiv.append(messageUl)
   document.body.append(messageDiv)
+  setInterval(function(){
+    fetch(messagesURL)
+    .then(res => res.json())
+    .then(function(messages) {
+      console.log(messages)
+      Message.wipeAll()
+      messages.forEach(message => new Message (message))
+      Message.renderAll()
+    })
+  }, 500)
 
-  fetch(messagesURL)
-  .then(res => res.json())
-  .then(function(messages) {
-    console.log(messages)
-    messages.forEach(message => new Message (message))
-    Message.renderAll()
-  })
 
   document.addEventListener('submit', function(e) {
     e.preventDefault()
@@ -24,5 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let newContent = {content: inputField.value}
     let newMessage = new Message (newContent)
     Message.renderAll()
+    fetch('http://10.185.1.104:3000/messages', {
+      method: "POST",
+      body: JSON.stringify(newContent),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(res => console.log("test"))
   })
 })
