@@ -8,17 +8,13 @@ class Message {
     const messageList = document.querySelector('#message-list')
     const messageLi = document.createElement('li')
     messageLi.textContent = this.content
-    messageList.append(messageLi)
+    if (messageLi.textContent !== "") {messageList.prepend(messageLi)} //filters out empty messages
   }
 
   static renderAll() {
     const messageList = document.querySelector('#message-list')
     messageList.innerHTML = ''
-    Message.all().forEach(message => message.renderMessage())
-  }
-
-  static all () {
-    return allMessages
+    allMessages.forEach(message => message.renderMessage())
   }
 
   static wipeAll() {
