@@ -1,47 +1,36 @@
-const messagesURL = `http://10.185.1.104:3000/messages`;
+document.addEventListener("DOMContentLoaded", () => {
+  const buildListItem = function(message) {
+    if (message.content !== "" && message.content !== null) {
+      li = document.createElement("li");
+      li.textContent = message.content;
+      return li;
+    }
+  };
 
-const render = function() {
-  messageList = document.getElementById("messages");
-  fetch(`${messagesURL}`)
-    .then(response => {
-      return response.json();
-    })
-    .then(messageData => {
-      messageList.innerHTML = " ";
-      messageData.forEach(message => {
-        li = document.createElement("li");
-        li.textContent = message.content;
-        messageList.append(li);
+  const renderMessages = function() {
+    const messageList = document.getElementById("messages");
+    Message.getList().then(msgData => {
+      messageList.innerHTML = "";
+      msgData.forEach(msg => {
+        messageList.append(buildListItem(msg));
       });
     });
-};
+  };
 
-document.addEventListener("DOMContentLoaded", () => {
+  const submitMessage = function() {
+    const messageBox = document.getElementById("message_input");
+    new Message(messageBox.value);
+    messageBox.value = "";
+  };
+
   console.log("%c DOM Content Loaded and Parsed!", "color: magenta");
-  messageBox = document.getElementById("message_input");
-  submit = document.querySelector("#message_form").children[1];
-  render();
+  const form = document.querySelector("#message_form");
+  renderMessages();
 
-  submit.addEventListener("click", e => {
-    e.preventDefault;
-    fetch(`${messagesURL}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        content: messageBox.value
-      })
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(messageData => {
-        return messageData;
-      })
-      .then(render());
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    submitMessage();
   });
 
-  setInterval(render, 500);
+  setInterval(renderMessages, 500);
 });
