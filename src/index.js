@@ -17,4 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
     messages.forEach(message => new Message (message))
     Message.renderAll()
   })
+
+  document.addEventListener('submit', function(e) {
+    e.preventDefault()
+    let inputField = document.querySelector('#message_input')
+    let newContent = {content: inputField.value}
+    let newMessage = new Message (newContent)
+    Message.renderAll()
+  })
 })

@@ -12,6 +12,8 @@ class Message {
   }
 
   static renderAll() {
+    const messageList = document.querySelector('#message-list')
+    messageList.innerHTML = ''
     Message.all().forEach(message => message.renderMessage())
   }
 
