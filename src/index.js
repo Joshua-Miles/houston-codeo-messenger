@@ -2,6 +2,33 @@ const messagesURL = `http://10.185.1.104:3000/messages`
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('%c DOM Content Loaded and Parsed!', 'color: magenta')
+  const messagesList = document.querySelector('#messages')
+  const newMessageForm = document.querySelector('#message_form')
 
- 
+  fetch(messagesURL)
+    .then(function(res){
+      return res.json
+    })
+
+  newMessageForm.addEventListener('submit', function(e){
+    e.preventDefault()
+    const content = newMessageForm.message.value
+    fetch(messagesURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        content: newMessageForm.message.value
+      })
+    })
+    .then(function(res){
+      return res.json();
+    })
+    .then(function(){
+      const newMessage = new Message(content, messagesList)
+      newMessage.sendMessage()
+    })  
+  })
 })
+
