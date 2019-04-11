@@ -1,11 +1,13 @@
 const messagesURL = `http://10.185.1.104:3000/messages`;
 
-const render = function(messageList) {
+const render = function() {
+  messageList = document.getElementById("messages");
   fetch(`${messagesURL}`)
     .then(response => {
       return response.json();
     })
     .then(messageData => {
+      messageList.innerHTML = " ";
       messageData.forEach(message => {
         li = document.createElement("li");
         li.textContent = message.content;
@@ -16,10 +18,9 @@ const render = function(messageList) {
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("%c DOM Content Loaded and Parsed!", "color: magenta");
-  messageList = document.getElementById("messages");
   messageBox = document.getElementById("message_input");
   submit = document.querySelector("#message_form").children[1];
-  render(messageList);
+  render();
 
   submit.addEventListener("click", e => {
     e.preventDefault;
@@ -39,6 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(messageData => {
         return messageData;
       })
-      .then(render(messageList));
+      .then(render());
   });
+
+  setInterval(render, 500);
 });
