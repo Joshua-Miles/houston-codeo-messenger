@@ -4,11 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('%c DOM Content Loaded and Parsed!', 'color: magenta')
   const messagesList = document.querySelector('#messages')
   const newMessageForm = document.querySelector('#message_form')
-
-  fetch(messagesURL)
+  
+  
+  setInterval(function(){
+    fetch(messagesURL)
     .then(function(res){
-      return res.json
+      return res.json()
     })
+    .then(function(messages){
+      messagesList.innerHTML = null
+      messages.forEach(function(message) {
+        const fetchedMessage = new Message(message.content, messagesList)
+        fetchedMessage.displayMessage()
+      });
+    })}, 500)
+  
 
   newMessageForm.addEventListener('submit', function(e){
     e.preventDefault()
@@ -27,8 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(function(){
       const newMessage = new Message(content, messagesList)
-      newMessage.sendMessage()
+      newMessage.displayMessage()
     })  
   })
+  // setInterval(loadMessages, 500)
 })
 

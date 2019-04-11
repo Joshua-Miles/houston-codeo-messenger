@@ -4,7 +4,7 @@ class Message {
         this.messagesList = messagesList
     }
 
-    sendMessage(){
+    displayMessage(){
         const messageLi = document.createElement('li')
         messageLi.innerText = this.content
         this.messagesList.append(messageLi)
