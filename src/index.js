@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newContent = {content: inputField.value}
     inputField.value = ""
     const newMessage = new Message (newContent)
-    Message.renderAll()
+    newMessage.renderMessage()
     fetch('http://10.185.1.104:3000/messages', {
       method: "POST",
       body: JSON.stringify(newContent),
