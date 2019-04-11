@@ -11,11 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .then(function(messages){
         messages.forEach(function(message){
-          //console.log(message)
           new Message(message)
         })
       })
   }
 
   fetchMessages()
+
+const messageForm = document.querySelector('#message_form')
+messageForm.addEventListener('submit', (e) => {
+  e.preventDefault()
+  const messageInput = document.querySelector('#message_input')
+  Message.create(messageInput.value)
+  messageForm.reset()
+})
+
+
+
+
 })

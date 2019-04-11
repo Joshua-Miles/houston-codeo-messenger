@@ -20,4 +20,22 @@ class Message {
       container.append(messageOnList, messageId, messageContent)
   }
 
+  static create(message){
+    fetch ('http://10.185.1.104:3000/messages',{
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify({
+        content: message
+      })
+    })
+    .then(function(response){
+      return response.json()
+    })
+    .then(function(response){
+      new Message(response)
+    })
+}
 }
