@@ -26,4 +26,4 @@ class Message {
   }
 }
 
-allMessages = []
+let allMessages = []

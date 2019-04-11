@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   messageUl.id = "message-list"
   messageDiv.append(messageUl)
   document.body.append(messageDiv)
-  
+
   setInterval(function(){
     fetch(messagesURL)
     .then(res => res.json())
@@ -20,12 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }, 500)
 
-
   document.addEventListener('submit', function(e) {
     e.preventDefault()
-    let inputField = document.querySelector('#message_input')
-    let newContent = {content: inputField.value}
-    let newMessage = new Message (newContent)
+    const inputField = document.querySelector('#message_input')
+    const newContent = {content: inputField.value}
+    inputField.value = ""
+    const newMessage = new Message (newContent)
     Message.renderAll()
     fetch('http://10.185.1.104:3000/messages', {
       method: "POST",
