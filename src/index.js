@@ -9,11 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
   messageUl.id = "message-list"
   messageDiv.append(messageUl)
   document.body.append(messageDiv)
+  
   setInterval(function(){
     fetch(messagesURL)
     .then(res => res.json())
     .then(function(messages) {
-      console.log(messages)
       Message.wipeAll()
       messages.forEach(message => new Message (message))
       Message.renderAll()
@@ -35,7 +35,5 @@ document.addEventListener('DOMContentLoaded', () => {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => res.json())
-    .then(res => console.log("test"))
   })
 })
