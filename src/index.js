@@ -1,44 +1,57 @@
+
 const messagesURL = `http://10.185.1.104:3000/messages`
-function create(message){
-  fetch(messagesURL, {
-    method: 'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'Accept':'application/json'
-    },
-    body: JSON.stringify({
-      content: message
-    })
-  })
-}
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('% DOM Content Loaded and Parsed!', 'color: magenta')
-  const form = document.querySelector('#message_form')
-  function chat(){
+  console.log('%c DOM Content Loaded and Parsed!', 'color: magenta')
+  
+  const msgContainer = document.querySelector('#messages')    
+  const reFetch = function(){
+  //get msg
+    Message.all = []  //because we have setInterval, so everytime it is creating duplicate objects, before we fetch each time, we need to reset the Message.all
     fetch(messagesURL)
-    .then(function(res){
-    return res.json()
+    .then(function(response){
+       return response.json()
     })
-   .then(function(messages){
-       let box = document.querySelector('#messages')
-       box.innerHTML = ''
-       messages.forEach(function(message){
-       let msg = document.createElement('li')
-       let content = message.content
-       let newmsg = new Message(content)
-       msg.innerText = content
-       box.append(msg)                                                           
-      })
+    .then(function(messages){
+        messages.forEach(message => {   
+        new Message(message)
+        });
+     msgContainer.innerHTML = ""
+     Message.display()
     })
-  }
-  chat()
-  form.addEventListener('submit', (e) => {  
+ }
+
+setInterval(function(){
+  reFetch()
+}, 500)  
+
+
+//add msg
+const submitBtn = document.querySelectorAll('#message_form input')[1]
+  
+  submitBtn.addEventListener('click', function(e){
+    const messageInput = document.querySelectorAll('#message_form input')[0].value
     e.preventDefault()
-    let message = document.querySelector('#message_input')
-    create(message.value)
-    chat()
-    message.value = ''
+    fetch(messagesURL, {
+      method:"POST",
+      headers:{
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+              },
+      body:JSON.stringify({
+        'content':messageInput
+      })        
+    })
+    .then(function(response){
+     return response.json()
+    })
+    .then(function(newMsg){
+      createMsg = new Message(newMsg)
+      createMsg.addMsg(newMsg)
+    })
   })
-  setInterval(chat,500)
+
+
+
+  
 })
